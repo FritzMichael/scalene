@@ -381,6 +381,12 @@ function makeTableHeader(fname, gpu, memory, functions = false) {
       width: 0,
       info: "Peak GPU memory allocated by line / function (may be inaccurate if GPU is not dedicated)",
     });
+    columns.push({
+      title: ["gpu", "kernels"],
+      color: CopyColor,
+      width: 0,
+      info: "associated GPU kernels",
+    });
   }
   columns.push({ title: ["", ""], color: "black", width: 100 });
   let s = "";
@@ -528,6 +534,11 @@ function makeProfileLine(
           0
         )}</font></td>`;
       }
+    }
+    if (true){
+      // kernel info
+      s += `<td style="width: 100">${line.n_gpu_kernels}`;
+      s += '</td>';
     }
   }
   s += `<td align="right" style="vertical-align: middle; width: 50" data-sort="${line.lineno}"><font color="gray" style="font-size: 70%; vertical-align: middle" >${line.lineno}&nbsp;</font></td>`;

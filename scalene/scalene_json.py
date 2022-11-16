@@ -168,6 +168,7 @@ class ScaleneJSON:
             "n_gpu_percent": n_gpu_percent,
             "n_gpu_avg_memory_mb": n_gpu_mem_samples.mean() / 1048576,
             "n_gpu_peak_memory_mb": n_gpu_mem_samples.peak() / 1048576,
+            "n_gpu_kernels": "random",
             "n_peak_mb": n_peak_mb,
             "n_growth_mb": n_peak_mb,  # For backwards compatibility
             "n_avg_mb": n_avg_mb,
@@ -231,7 +232,6 @@ class ScaleneJSON:
 
         output: Dict[str, Any] = {
             "program": program,
-            "alloc_samples" : stats.alloc_samples,
             "elapsed_time_sec": stats.elapsed_time,
             "growth_rate": growth_rate,
             "max_footprint_mb": stats.max_footprint,
@@ -286,7 +286,7 @@ class ScaleneJSON:
             # restore its name, as in "[12]".
             fname_print = fname
 
-            result = re.match(r"ipython-input-([0-9]+)-.*", fname_print)
+            result = re.match("ipython-input-([0-9]+)-.*", fname_print)
             if result:
                 fname_print = Filename("[" + result.group(1) + "]")
 
@@ -336,7 +336,7 @@ class ScaleneJSON:
             try:
                 with open(full_fname, "r", encoding="utf-8") as source_file:
                     code_lines = source_file.readlines()
-            except (FileNotFoundError, OSError):
+            except FileNotFoundError:
                 continue
 
             output["files"][fname_print] = {
